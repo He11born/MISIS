@@ -1,6 +1,7 @@
 # --- ЧАСТЬ 1: КОНСТАНТЫ И ИМПОРТЫ ---
 import pandas as pd
 import os
+import sys
 
 FILE_NAME = 'разраб.csv'
 # --- КОНСТАНТЫ ДЛЯ СОСТОЯНИЯ ---
@@ -41,7 +42,8 @@ def load_data():
 
     # 2. Если файл найден, используем TRY-EXCEPT для обработки ошибок Pandas
     try:
-        df = pd.read_csv(FILE_NAME,encoding='cp1251',sep=';')
+        # Попробуйте этот вариант в pd.read_csv:
+        df = pd.read_csv(FILE_NAME, encoding='latin1', sep=';')
 
         # Очистка и преобразование
         df.columns = df.columns.str.strip()
@@ -63,8 +65,8 @@ def load_data():
         return data_dict
 
     except Exception as e:
-        # Ловим любую другую ошибку, например, если файл поврежден
-        print(f"Произошла ошибка при обработке файла: {e}")
+        # !!! ВАЖНОЕ ИЗМЕНЕНИЕ: Печатаем полную ошибку !!!
+        print(f"❌ КРИТИЧЕСКАЯ ОШИБКА ЗАГРУЗКИ: {e}", file=sys.stderr)
         return {}
 
 
